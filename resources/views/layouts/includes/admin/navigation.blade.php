@@ -9,8 +9,8 @@
    </svg>
          </button>
         <a href="/" class="flex ms-2 md:me-24">
-          <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 me-3" alt="FlowBite Logo" />
-          <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+          <img src="images/logo_medico.png" class="h-9 me-3" alt="SIMIRODRO" />
+          <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">SIMIRODRO</span>
         </a>
       </div>
        <!-- Settings Dropdown -->
