@@ -14,6 +14,8 @@ class User extends Authenticatable
 {
     use HasApiTokens;
 
+
+    // chore: install spatie/laravel-permission, datatables and wireui
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
