@@ -16,21 +16,25 @@ class RoleTable extends DataTableComponent
     }
 
     public function columns(): array
-    {
-        return [
-            Column::make("Id", "id")
-                ->sortable(),
+{
+    return [
+        Column::make("Id", "id")
+            ->sortable(),
 
-            Column::make("Nombre", "name")
-                ->sortable(),
+        Column::make("Nombre", "name")
+            ->sortable(),
 
-            Column::make("Fecha", "created_at")
-                ->sortable()
-                ->format(function($value){
-                    return $value->format('d/m/Y');
-                }),
-          Column::make('Acciones')
-    ->label(fn ($row) => view('layouts.includes.admin.roles.actions', ['role' => $row])),
-        ];
-    }
+        Column::make("Fecha", "created_at")
+            ->sortable()
+            ->format(function ($value) {
+                return $value->format('d/m/Y');
+            }),
+
+        Column::make("Sistemas", "is_system")
+            ->deselected(),
+
+        Column::make('Acciones')
+            ->label(fn ($row) => view('layouts.includes.admin.roles.actions', ['role' => $row])),
+    ];
+}
 }

@@ -9,34 +9,34 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles; // Importar Spatie
+use Illuminate\Database\Eloquent\SoftDeletes; // Importar Soft Deletes
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-
-
-    // chore: install spatie/laravel-permission, datatables and wireui
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles; // Añadido para el Módulo de Roles
+    use SoftDeletes; // Añadido para el Módulo de Seguridad (ADA 13)
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Atributos que son asignables masivamente.
+     * He añadido los campos que pide tu interfaz de Healthify.
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'id_number', // Nuevo: Identificación para el reporte
+        'phone',     // Nuevo: Contacto médico
+        'address',   // Nuevo: Ubicación
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Atributos ocultos para la serialización.
      */
     protected $hidden = [
         'password',
@@ -46,18 +46,14 @@ class User extends Authenticatable
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
+     * Atributos que se añaden al formato de array del modelo.
      */
     protected $appends = [
         'profile_photo_url',
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Casts de atributos.
      */
     protected function casts(): array
     {

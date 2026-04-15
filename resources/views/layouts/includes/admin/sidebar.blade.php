@@ -15,6 +15,12 @@
             'href' => route('admin.roles.index'),
             'active' => request()->routeIs('admin.roles.*'),
         ],
+        [
+            'name' => 'Usuarios',
+            'icon' => 'fa-solid fa-users',
+            'href' => route('admin.users.index'),
+            'active' => request()->routeIs('admin.users.*'),
+        ],
     ];
 @endphp
 
@@ -27,7 +33,6 @@
 
             @foreach ($links as $link)
                 <li>
-
                     {{-- Si es un header --}}
                     @isset($link['header'])
                         <div class="px-2 py-2 text-xs font-semibold text-gray-500 uppercase">
@@ -38,7 +43,7 @@
                         <a href="{{ $link['href'] }}"
                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
 
-                            <span class="w-6 h-6 inline-flex justify-center items-center text-gray-500">
+                            <span class="w-6 h-6 inline-flex justify-center items-center text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white">
                                 <i class="{{ $link['icon'] }}"></i>
                             </span>
 
@@ -47,51 +52,8 @@
                             </span>
                         </a>
                     @endisset
-
                 </li>
             @endforeach
-
-            {{-- Dropdown estático --}}
-            <li>
-                <button type="button"
-                    class="flex items-center w-full justify-between px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group"
-                    aria-controls="dropdown-example"
-                    data-collapse-toggle="dropdown-example">
-
-                    <span class="flex-1 ms-3 text-left whitespace-nowrap">
-                        E-commerce
-                    </span>
-
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2"
-                              d="m19 9-7 7-7-7"/>
-                    </svg>
-                </button>
-
-                <ul id="dropdown-example" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="#"
-                           class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                            Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                            Billing
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           class="pl-10 flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                            Invoice
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
         </ul>
     </div>
 </aside>
