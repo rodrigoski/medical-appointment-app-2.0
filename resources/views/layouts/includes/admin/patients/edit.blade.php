@@ -31,9 +31,20 @@
             @csrf
             @method('PUT')
 
-            {{-- Pestañas --}}
-            <div x-data="{ tab: 'personal' }">
+            @php
+                $activeTab = 'personal';
+                if ($errors->hasAny(['allergies','chronic_conditions','surgical_history','family_history'])) {
+                    $activeTab = 'antecedentes';
+                } elseif ($errors->hasAny(['blood_type_id','observations'])) {
+                    $activeTab = 'general';
+                } elseif ($errors->hasAny(['emergency_contact_name','emergency_contact_phone','emergency_contact_relationships'])) {
+                    $activeTab = 'emergencia';
+                }
+            @endphp
 
+            <div x-data="{ tab: '{{ $activeTab }}' }">
+
+                {{-- Navegación de pestañas --}}
                 <div class="flex space-x-1 border-b border-gray-200 mb-6">
                     <button type="button" @click="tab = 'personal'"
                             :class="tab === 'personal' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500 hover:text-gray-700'"
@@ -63,7 +74,6 @@
 
                 {{-- Tab: Datos personales --}}
                 <div x-show="tab === 'personal'" class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-                    {{-- Aviso de edición de cuenta --}}
                     <div class="flex items-center justify-between bg-indigo-50 border-l-4 border-indigo-500 rounded-lg px-5 py-4 mb-6">
                         <div class="flex items-center space-x-3">
                             <div class="text-indigo-500 text-xl">
@@ -83,8 +93,6 @@
                             <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                         </a>
                     </div>
-
-                    {{-- Info en modo lectura --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <p class="text-xs font-semibold text-gray-400 uppercase mb-1">Teléfono</p>
@@ -106,27 +114,39 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Alergias</label>
-                            <textarea name="allergies" rows="3"
+                            <textarea name="allergies" rows="3" maxlength="500"
                                       placeholder="Ej: Polen, Penicilina, Mariscos..."
-                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('allergies', $patient->allergies) }}</textarea>
+                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('allergies') border-red-500 @enderror">{{ old('allergies', $patient->allergies) }}</textarea>
+                            @error('allergies')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Condiciones crónicas</label>
-                            <textarea name="chronic_conditions" rows="3"
+                            <textarea name="chronic_conditions" rows="3" maxlength="500"
                                       placeholder="Ej: Diabetes, Hipertensión..."
-                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('chronic_conditions', $patient->chronic_conditions) }}</textarea>
+                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('chronic_conditions') border-red-500 @enderror">{{ old('chronic_conditions', $patient->chronic_conditions) }}</textarea>
+                            @error('chronic_conditions')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Historial quirúrgico</label>
-                            <textarea name="surgical_history" rows="3"
+                            <textarea name="surgical_history" rows="3" maxlength="500"
                                       placeholder="Ej: Apendicectomía 2015..."
-                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('surgical_history', $patient->surgical_history) }}</textarea>
+                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('surgical_history') border-red-500 @enderror">{{ old('surgical_history', $patient->surgical_history) }}</textarea>
+                            @error('surgical_history')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Historial familiar</label>
-                            <textarea name="family_history" rows="3"
+                            <textarea name="family_history" rows="3" maxlength="500"
                                       placeholder="Ej: Diabetes hereditaria..."
-                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('family_history', $patient->family_history) }}</textarea>
+                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('family_history') border-red-500 @enderror">{{ old('family_history', $patient->family_history) }}</textarea>
+                            @error('family_history')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -137,7 +157,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Tipo de Sangre</label>
                             <select name="blood_type_id"
-                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('blood_type_id') border-red-500 @enderror">
                                 <option value="">Selecciona un tipo de sangre</option>
                                 @foreach($bloodTypes as $bloodType)
                                     <option value="{{ $bloodType->id }}"
@@ -146,12 +166,18 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('blood_type_id')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Observaciones</label>
-                            <textarea name="observations" rows="4"
+                            <textarea name="observations" rows="4" maxlength="1000"
                                       placeholder="Escribe cualquier observación relevante..."
-                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('observations', $patient->observations) }}</textarea>
+                                      class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('observations') border-red-500 @enderror">{{ old('observations', $patient->observations) }}</textarea>
+                            @error('observations')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -161,24 +187,33 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre del contacto</label>
-                            <input type="text" name="emergency_contact_name"
+                            <input type="text" name="emergency_contact_name" maxlength="100"
                                    value="{{ old('emergency_contact_name', $patient->emergency_contact_name) }}"
                                    placeholder="Nombre completo del contacto"
-                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('emergency_contact_name') border-red-500 @enderror">
+                            @error('emergency_contact_name')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Teléfono del contacto</label>
-                            <input type="text" name="emergency_contact_phone"
+                            <input type="text" name="emergency_contact_phone" maxlength="20"
                                    value="{{ old('emergency_contact_phone', $patient->emergency_contact_phone) }}"
                                    placeholder="(999) 999-9999"
-                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('emergency_contact_phone') border-red-500 @enderror">
+                            @error('emergency_contact_phone')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Relación con el contacto</label>
-                            <input type="text" name="emergency_contact_relationships"
+                            <input type="text" name="emergency_contact_relationships" maxlength="50"
                                    value="{{ old('emergency_contact_relationships', $patient->emergency_contact_relationships) }}"
                                    placeholder="Familiar, Amigo, etc."
-                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                   class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('emergency_contact_relationships') border-red-500 @enderror">
+                            @error('emergency_contact_relationships')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
