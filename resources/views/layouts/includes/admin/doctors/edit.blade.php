@@ -27,6 +27,34 @@
             </div>
         </div>
 
+        {{-- Sección foto de perfil --}}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+            <p class="text-sm font-semibold text-gray-700 mb-4">Foto de perfil</p>
+            <div class="flex items-center space-x-6">
+
+                {{-- Preview de la foto --}}
+                <div class="relative">
+                    <div id="photo-preview"
+                         class="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden border-4 border-indigo-200">
+                        <i class="fa-solid fa-user-doctor text-indigo-400 text-3xl"></i>
+                    </div>
+                </div>
+
+                {{-- Controles --}}
+                <div class="flex flex-col space-y-2">
+                    <label for="photo-input"
+                           class="cursor-pointer inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow transition">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Subir foto</span>
+                    </label>
+                    <input id="photo-input" type="file" accept="image/*" class="hidden"
+                           onchange="previewPhoto(event)">
+                    <p class="text-xs text-gray-400">JPG, PNG o WEBP. Máximo 2MB.</p>
+                </div>
+
+            </div>
+        </div>
+
         <form id="doctor-form" action="{{ route('admin.doctors.update', $doctor) }}" method="POST">
             @csrf
             @method('PUT')
@@ -79,4 +107,20 @@
             </div>
         </form>
     </div>
+
+    {{-- Script preview de foto --}}
+    <script>
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('photo-preview');
+                preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-full">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+
 </x-admin-layout>
