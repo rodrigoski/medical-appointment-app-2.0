@@ -20,13 +20,17 @@ class DoctorController extends Controller
         return view('layouts.includes.admin.doctors.create', compact('specialities'));
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
 {
     $request->validate([
+        'name'           => ['required', 'string', 'min:3', 'max:100'],
         'speciality_id'  => ['nullable', 'exists:specialities,id'],
         'license_number' => ['nullable', 'string', 'min:5', 'max:50'],
         'biography'      => ['nullable', 'string', 'min:3', 'max:2000'],
     ], [
+        'name.required'      => 'El nombre del doctor es obligatorio.',
+        'name.min'           => 'El nombre debe tener al menos 3 caracteres.',
+        'name.max'           => 'El nombre no puede superar 100 caracteres.',
         'license_number.min' => 'La licencia debe tener al menos 5 caracteres.',
         'license_number.max' => 'La licencia no puede superar 50 caracteres.',
         'biography.min'      => 'La biografía debe tener al menos 3 caracteres.',
@@ -34,6 +38,7 @@ class DoctorController extends Controller
     ]);
 
     $doctor = Doctor::create([
+        'name'           => $request->name,
         'speciality_id'  => $request->speciality_id,
         'license_number' => $request->license_number,
         'biography'      => $request->biography,
@@ -41,7 +46,7 @@ class DoctorController extends Controller
 
     return redirect()->route('admin.doctors.edit', $doctor)
         ->with('swal', [
-            'title' => '¡Guardado!',
+            'title' => '¡Creado!',
             'text'  => 'Doctor creado correctamente.',
             'icon'  => 'success',
         ]);
@@ -92,7 +97,14 @@ class DoctorController extends Controller
 }
 
     public function destroy(Doctor $doctor)
-    {
-        //
-    }
+{
+    $doctor->delete();
+
+    return redirect()->route('admin.doctors.index')
+        ->with('swal', [
+            'title' => '¡Eliminado!',
+            'text'  => 'Doctor eliminado correctamente.',
+            'icon'  => 'success',
+        ]);
+}
 }

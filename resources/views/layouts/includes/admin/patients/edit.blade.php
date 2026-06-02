@@ -44,33 +44,16 @@
 
             <div x-data="{ tab: '{{ $activeTab }}' }">
 
-                {{-- Navegación de pestañas --}}
-                <div class="flex space-x-1 border-b border-gray-200 mb-6">
-                    <button type="button" @click="tab = 'personal'"
-                            :class="tab === 'personal' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500 hover:text-gray-700'"
-                            class="flex items-center space-x-2 px-4 py-3 text-sm font-medium transition">
-                        <i class="fa-solid fa-user"></i>
-                        <span>Datos personales</span>
-                    </button>
-                    <button type="button" @click="tab = 'antecedentes'"
-                            :class="tab === 'antecedentes' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500 hover:text-gray-700'"
-                            class="flex items-center space-x-2 px-4 py-3 text-sm font-medium transition">
-                        <i class="fa-solid fa-file-medical"></i>
-                        <span>Antecedentes</span>
-                    </button>
-                    <button type="button" @click="tab = 'general'"
-                            :class="tab === 'general' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500 hover:text-gray-700'"
-                            class="flex items-center space-x-2 px-4 py-3 text-sm font-medium transition">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span>Información general</span>
-                    </button>
-                    <button type="button" @click="tab = 'emergencia'"
-                            :class="tab === 'emergencia' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500 hover:text-gray-700'"
-                            class="flex items-center space-x-2 px-4 py-3 text-sm font-medium transition">
-                        <i class="fa-solid fa-heart-pulse"></i>
-                        <span>Contacto de emergencia</span>
-                    </button>
-                </div>
+            {{-- Navegación de pestañas --}}
+                <x-admin-tabs
+                    :tabs="[
+                        ['key' => 'personal',     'icon' => 'fa-solid fa-user',         'label' => 'Datos personales'],
+                        ['key' => 'antecedentes', 'icon' => 'fa-solid fa-file-medical', 'label' => 'Antecedentes'],
+                        ['key' => 'general',      'icon' => 'fa-solid fa-circle-info',  'label' => 'Información general'],
+                        ['key' => 'emergencia',   'icon' => 'fa-solid fa-heart-pulse',  'label' => 'Contacto de emergencia'],
+                        ]"
+                    :active="$activeTab"
+                />
 
                 {{-- Tab: Datos personales --}}
                 <div x-show="tab === 'personal'" class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">

@@ -34,40 +34,44 @@ class UserController extends Controller
      * Guardar usuario.
      */
     public function store(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|string|email|unique:users,email',
-            'password'   => 'required|string|min:8|confirmed',
-            'id_number'  => 'required|string|unique:users,id_number',
-            'phone'      => 'nullable|string|max:20',
-            'address'    => 'nullable|string|max:255',
-            'role'       => 'required|exists:roles,name',
-        ]);
+{
+    $validated = $request->validate([
+        'name'       => 'required|string|max:255',
+        'email'      => 'required|string|email|unique:users,email',
+        'password'   => 'required|string|min:8|confirmed',
+        'id_number'  => 'required|string|unique:users,id_number',
+        'phone'      => 'nullable|string|max:20',
+        'address'    => 'nullable|string|max:255',
+        'role'       => 'required|exists:roles,name',
+    ]);
 
-        $user = User::create([
-            'name'       => $validated['name'],
-            'email'      => $validated['email'],
-            'password'   => Hash::make($validated['password']),
-            'id_number'  => $validated['id_number'],
-            'phone'      => $validated['phone'] ?? null,
-            'address'    => $validated['address'] ?? null,
-        ]);
+    $user = User::create([
+        'name'       => $validated['name'],
+        'email'      => $validated['email'],
+        'password'   => Hash::make($validated['password']),
+        'id_number'  => $validated['id_number'],
+        'phone'      => $validated['phone'] ?? null,
+        'address'    => $validated['address'] ?? null,
+    ]);
 
-        $user->assignRole($validated['role']);
+    $user->assignRole($validated['role']);
 
-
-        if($user::role('Paciente')){
-            $patient = $user->patient()->create([]);
-            return redirect()->route('admin.patients.edit', $patient);
-        }
-
-        return redirect()
-            ->route('admin.users.index')
-            ->with('swal', 'Creado');
-
-
+    if ($user->hasRole('Paciente')) {
+        $patient = $user->patient()->create([]);
+        return redirect()->route('admin.patients.edit', $patient);
     }
+
+    if ($user->hasRole('Doctor')) {
+        $doctor = $user->doctor()->create([
+            'name' => $validated['name'],
+        ]);
+        return redirect()->route('admin.doctors.edit', $doctor);
+    }
+
+    return redirect()
+        ->route('admin.users.index')
+        ->with('swal', 'Creado');
+}
 
     /**
      * Formulario de edición.

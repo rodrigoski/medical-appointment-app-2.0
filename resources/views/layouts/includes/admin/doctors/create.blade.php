@@ -21,7 +21,7 @@
                 <button form="doctor-form" type="submit"
                         class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow flex items-center space-x-2">
                     <i class="fa-solid fa-check"></i>
-                    <span>Guardar cambios</span>
+                    <span>Guardar</span>
                 </button>
             </div>
         </div>
@@ -32,6 +32,19 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
                 <div class="grid grid-cols-1 gap-6">
 
+                    {{-- Nombre --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre completo</label>
+                        <input type="text" name="name" maxlength="100"
+                               value="{{ old('name') }}"
+                               placeholder="Ej: Dr. Juan Pérez"
+                               class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror">
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Especialidad --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Especialidad</label>
                         <select name="speciality_id"
@@ -49,6 +62,7 @@
                         @enderror
                     </div>
 
+                    {{-- Licencia --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Número de licencia médica</label>
                         <input type="text" name="license_number" maxlength="50"
@@ -60,6 +74,7 @@
                         @enderror
                     </div>
 
+                    {{-- Biografía --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Biografía</label>
                         <textarea name="biography" rows="4" maxlength="2000"

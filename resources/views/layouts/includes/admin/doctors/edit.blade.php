@@ -3,14 +3,13 @@
 
     <div class="container mx-auto px-6 py-4">
 
-        {{-- Encabezado --}}
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center space-x-4">
                 <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-lg">
                     <i class="fa-solid fa-user-doctor"></i>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-gray-800">Editar Doctor</h3>
+                    <h3 class="text-xl font-bold text-gray-800">{{ $doctor->name ?? 'Editar Doctor' }}</h3>
                     <p class="text-sm text-gray-500">Licencia: {{ $doctor->license_number ?? 'N/A' }}</p>
                 </div>
             </div>
@@ -31,16 +30,12 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
             <p class="text-sm font-semibold text-gray-700 mb-4">Foto de perfil</p>
             <div class="flex items-center space-x-6">
-
-                {{-- Preview de la foto --}}
                 <div class="relative">
                     <div id="photo-preview"
                          class="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden border-4 border-indigo-200">
                         <i class="fa-solid fa-user-doctor text-indigo-400 text-3xl"></i>
                     </div>
                 </div>
-
-                {{-- Controles --}}
                 <div class="flex flex-col space-y-2">
                     <label for="photo-input"
                            class="cursor-pointer inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow transition">
@@ -51,7 +46,6 @@
                            onchange="previewPhoto(event)">
                     <p class="text-xs text-gray-400">JPG, PNG o WEBP. Máximo 2MB.</p>
                 </div>
-
             </div>
         </div>
 
@@ -61,6 +55,18 @@
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
                 <div class="grid grid-cols-1 gap-6">
+
+                    {{-- Nombre --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre completo</label>
+                        <input type="text" name="name" maxlength="100"
+                               value="{{ old('name', $doctor->name) }}"
+                               placeholder="Ej: Dr. Juan Pérez"
+                               class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror">
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     {{-- Especialidad --}}
                     <div>
@@ -108,12 +114,10 @@
         </form>
     </div>
 
-    {{-- Script preview de foto --}}
     <script>
         function previewPhoto(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const preview = document.getElementById('photo-preview');
