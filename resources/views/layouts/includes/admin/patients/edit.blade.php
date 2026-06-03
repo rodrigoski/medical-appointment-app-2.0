@@ -44,14 +44,34 @@
 
             <div x-data="{ tab: '{{ $activeTab }}' }">
 
-            {{-- Navegación de pestañas --}}
+                {{-- Navegación de pestañas --}}
                 <x-admin-tabs
                     :tabs="[
-                        ['key' => 'personal',     'icon' => 'fa-solid fa-user',         'label' => 'Datos personales'],
-                        ['key' => 'antecedentes', 'icon' => 'fa-solid fa-file-medical', 'label' => 'Antecedentes'],
-                        ['key' => 'general',      'icon' => 'fa-solid fa-circle-info',  'label' => 'Información general'],
-                        ['key' => 'emergencia',   'icon' => 'fa-solid fa-heart-pulse',  'label' => 'Contacto de emergencia'],
-                        ]"
+                        [
+                            'key'    => 'personal',
+                            'icon'   => 'fa-solid fa-user',
+                            'label'  => 'Datos personales',
+                            'fields' => [],
+                        ],
+                        [
+                            'key'    => 'antecedentes',
+                            'icon'   => 'fa-solid fa-file-medical',
+                            'label'  => 'Antecedentes',
+                            'fields' => ['allergies', 'chronic_conditions', 'surgical_history', 'family_history'],
+                        ],
+                        [
+                            'key'    => 'general',
+                            'icon'   => 'fa-solid fa-circle-info',
+                            'label'  => 'Información general',
+                            'fields' => ['blood_type_id', 'observations'],
+                        ],
+                        [
+                            'key'    => 'emergencia',
+                            'icon'   => 'fa-solid fa-heart-pulse',
+                            'label'  => 'Contacto de emergencia',
+                            'fields' => ['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationships'],
+                        ],
+                    ]"
                     :active="$activeTab"
                 />
 

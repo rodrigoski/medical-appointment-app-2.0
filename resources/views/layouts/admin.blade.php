@@ -77,5 +77,51 @@
             }
         });
     </script>
+    <script>
+    @if (session('swal'))
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire(@json(session('swal')));
+        });
+    @endif
+
+    {{-- NUEVO: disparar swal cuando hay errores de validación --}}
+    @if ($errors->any())
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: '¡Datos incorrectos!',
+                html: `<ul class="text-left text-sm text-red-600 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>• {{ $error }}</li>
+                    @endforeach
+                </ul>`,
+                icon: 'error',
+                confirmButtonColor: '#4f46e5',
+                confirmButtonText: 'Entendido',
+            });
+        });
+    @endif
+
+    document.addEventListener('submit', function(e) {
+        if (e.target.classList.contains('delete-form')) {
+            e.preventDefault();
+            const form = e.target;
+
+            Swal.fire({
+                title: "Estas seguro?",
+                text: "No podras revertir esto",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Si, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
