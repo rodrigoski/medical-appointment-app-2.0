@@ -73,9 +73,13 @@ class DoctorTable extends DataTableComponent
     ->format(function ($value, $row, Column $column) {
         $editUrl   = route('admin.doctors.edit', $value);
         $deleteUrl = route('admin.doctors.destroy', $value);
+        $schedulesUrl = route('admin.doctors.schedules', $value);
 
         return '
             <div class="flex items-center space-x-2">
+                <a href="' . $schedulesUrl . '" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" title="Ver horarios">
+                    <i class="fa-solid fa-clock mr-1"></i> Horarios
+                </a>
                 <a href="' . $editUrl . '" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <i class="fa-solid fa-user-pen mr-1"></i> Editar
                 </a>

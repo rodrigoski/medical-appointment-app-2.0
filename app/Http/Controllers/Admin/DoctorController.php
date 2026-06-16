@@ -107,4 +107,9 @@ class DoctorController extends Controller
             'icon'  => 'success',
         ]);
 }
+
+    public function schedules(Doctor $doctor)
+    {
+        return view('layouts.includes.admin.doctors.schedules', compact('doctor'));
+    }
 }
