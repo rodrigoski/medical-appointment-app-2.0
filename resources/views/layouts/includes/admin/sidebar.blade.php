@@ -41,6 +41,12 @@
             'href' => route('admin.appointments.index'),
             'active' => request()->routeIs('admin.appointments.*'),
         ],
+        [
+            'name' => 'Seguros',
+            'icon' => 'fa-solid fa-shield-heart',
+            'href' => route('admin.insurances.index'),
+            'active' => request()->routeIs('admin.insurances.*'),
+        ],
     ];
 @endphp
 

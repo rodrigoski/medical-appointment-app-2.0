@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\AppointmentController;
+use App\Http\Controllers\Admin\InsuranceController;
 
 
 Route::redirect('/', '/admin');
@@ -49,5 +50,7 @@ Route::middleware([
 
             Route::get('doctors/{doctor}/schedules', [DoctorController::class, 'schedules'])
                 ->name('doctors.schedules');
+
+            Route::resource('insurances', InsuranceController::class);
         });
 });
